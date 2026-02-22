@@ -3,7 +3,13 @@ import { prisma } from "../config/prisma.js";
 // GET ALL USERS
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
     res.json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -30,7 +36,6 @@ export const getUserById = async (req, res) => {
 };
 
 // CREATE USER
-// CREATE USER
 export const createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -53,7 +58,7 @@ export const createUser = async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: "User gagal dibuat, email sudah digunakan." });
   }
 };
 
