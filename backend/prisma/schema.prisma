@@ -5,6 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 // pnpm prisma db_push (untuk perubahan skema ke database)
+// pnpm prisma db push --force-reset (menghapus semua data dan membuat ulang tabel, gunakan dengan hati-hati)
+// pnpm prisma migrate dev --name nama_perubahan (untuk membuat migrasi dengan nama perubahan, lalu jalankan migrasi ke database)
+
 
 generator client {
   provider = "prisma-client-js"
