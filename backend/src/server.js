@@ -8,13 +8,16 @@ const { PrismaClient } = pkg;
 dotenv.config();
 
 const app = express();
-const prisma = new PrismaClient();
+
+const prisma = new PrismaClient({
+  log: ["query", "info", "warn", "error"],
+});
 
 app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.json({ message: "API berjalan 🚀" });
+  res.json({ message: "API berjalan" });
 });
 
 app.get("/test-db", async (req, res) => {
