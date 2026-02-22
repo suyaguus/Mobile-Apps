@@ -1,9 +1,76 @@
 import { prisma } from "../config/prisma.js";
 
+// GET ALL USERS
 export const getAllUsers = async (req, res) => {
   try {
     const users = await prisma.user.findMany();
     res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// GET USER BY ID
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await prisma.user.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User tidak ditemukan" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// CREATE USER
+export const createUser = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    const newUser = await prisma.user.create({
+      data: { name, email },
+    });
+
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// UPDATE USER
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email } = req.body;
+
+    const updatedUser = await prisma.user.update({
+      where: { id: Number(id) },
+      data: { name, email },
+    });
+
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// DELETE USER
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await prisma.user.delete({
+      where: { id: Number(id) },
+    });
+
+    res.json({ message: "User berhasil dihapus" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
