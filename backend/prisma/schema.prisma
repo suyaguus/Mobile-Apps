@@ -1,14 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-// pnpm prisma db_push (untuk perubahan skema ke database)
-// pnpm prisma db push --force-reset (menghapus semua data dan membuat ulang tabel, gunakan dengan hati-hati)
-// pnpm prisma migrate dev --name nama_perubahan (untuk membuat migrasi dengan nama perubahan, lalu jalankan migrasi ke database)
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -18,20 +7,19 @@ datasource db {
 }
 
 model User {
-  id        Int   @id @default(autoincrement())
-  // id        String   @id @default(uuid()) untuk development akhir
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  password     String
+  createdAt    DateTime      @default(now())
   transactions Transaction[]
 }
 
 model Transaction {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   title     String
   amount    Float
-  type      String   // income | expense
+  type      String 
   category  String
   date      DateTime
   userId    Int
