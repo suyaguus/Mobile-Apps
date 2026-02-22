@@ -18,7 +18,8 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        Int   @id @default(autoincrement())
+  // id        String   @id @default(uuid()) untuk development akhir
   name      String
   email     String   @unique
   password  String
@@ -33,7 +34,7 @@ model Transaction {
   type      String   // income | expense
   category  String
   date      DateTime
-  userId    String
+  userId    Int
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
