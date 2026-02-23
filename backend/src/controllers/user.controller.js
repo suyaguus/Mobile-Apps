@@ -38,27 +38,30 @@ export const getUserById = async (req, res) => {
 // CREATE USER
 export const createUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, phone, address } = req.body;
+
+    if (!name || !email || !phone) {
+      return res.status(400).json({
+        message: "Nama, email, dan no telepon wajib diisi.",
+      });
+    }
 
     const newUser = await prisma.user.create({
       data: {
         name,
         email,
-        password,
-      },
-      select: {
-        name: true,
-        email: true,
+        phone,
+        address, // boleh null
       },
     });
 
     res.status(201).json({
-      message: "User berhasil dibuat",
+      message: "User berhasil dibuat.",
       data: newUser,
     });
 
   } catch (error) {
-    res.status(500).json({ message: "User gagal dibuat, email sudah digunakan." });
+    res.status(500).json({ error: error.message });
   }
 };
 
