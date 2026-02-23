@@ -63,17 +63,36 @@ export const createUser = async (req, res) => {
 };
 
 // UPDATE USER
-export const updateUser = async (req, res) => {
+export const patchUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, email } = req.body;
 
+    // Cek apakah ada data yang dikirim
+    if (!name && !email) {
+      return res.status(400).json({
+        message: "Minimal satu field (name atau email) harus diisi",
+      });
+    }
+
     const updatedUser = await prisma.user.update({
       where: { id: Number(id) },
-      data: { name, email },
+      data: {
+        ...(name && { name }),
+        ...(email && { email }),
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
     });
 
-    res.json(updatedUser);
+    res.json({
+      message: "User berhasil diupdate",
+      data: updatedUser,
+    });
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
