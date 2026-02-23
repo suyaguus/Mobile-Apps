@@ -10,9 +10,23 @@ export const getAllUsers = async (req, res) => {
         email: true,
       },
     });
-    res.json(users);
+
+    if (users.length === 0) {
+      return res.status(200).json({
+        message: "Data user tidak ditemukan.",
+        data: [],
+      });
+    }
+
+    res.status(200).json({
+      message: "Berhasil mengambil data user.",
+      data: users,
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({
+      message: "Terjadi kesalahan pada server.",
+      error: error.message,
+    });
   }
 };
 
