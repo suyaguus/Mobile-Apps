@@ -6,6 +6,9 @@ datasource db {
   provider = "postgresql"
 }
 
+// npx prisma migrate reset
+// npx prisma migrate dev --name init
+
 model User {
   id           Int           @id @default(autoincrement())
   name         String
