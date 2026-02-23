@@ -22,11 +22,22 @@ export const getUserById = async (req, res) => {
     const { id } = req.params;
 
     const user = await prisma.user.findUnique({
-      where: { id: Number(id) },
+      where: {
+        id: Number(id),
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        address: true,
+      },
     });
 
     if (!user) {
-      return res.status(404).json({ message: "User tidak ditemukan" });
+      return res.status(404).json({
+        message: "User tidak ditemukan",
+      });
     }
 
     res.json(user);
@@ -59,7 +70,6 @@ export const createUser = async (req, res) => {
       message: "User berhasil dibuat.",
       data: newUser,
     });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -104,7 +114,6 @@ export const patchUser = async (req, res) => {
         email: updatedUser.email,
       },
     });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
